@@ -13,7 +13,12 @@ public class CarController {
     private final AtomicLong counter = new AtomicLong();
 
     @GetMapping("/available")
-    public Car greeting(@RequestParam(value = "name", defaultValue = "Fiat") String name) {
+    public Car available(@RequestParam(value = "name", defaultValue = "Fiat") String name) {
+        return new Car(counter.incrementAndGet(), String.format(template, name));
+    }
+
+    @GetMapping("/rent")
+    public Car rent(@RequestParam(value = "name", defaultValue = "Fiat") String name) {
         return new Car(counter.incrementAndGet(), String.format(template, name));
     }
 }
