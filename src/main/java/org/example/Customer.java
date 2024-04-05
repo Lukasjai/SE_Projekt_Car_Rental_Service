@@ -1,73 +1,59 @@
 package org.example;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
+import jakarta.persistence.Entity;
 
-import java.util.List;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
 public class Customer {
 
-    private String id;
-    private String firstname;
-    private String lastname;
-    private String telNr;
-    private String licenseNr;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String orders;
+    private String name;
+    private String email;
+    private String password;
+    // Add more fields as needed
 
-    public Customer(long counter, String id, String firstname, String lastname, String telNr, String licenseNr, String orders) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.telNr = telNr;
-        this.licenseNr = licenseNr;
-        this.orders = orders;
+    // Constructors, getters, and setters
+    public Customer() {
     }
 
-    public String getId() {
+    public Customer(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    // Getters and Setters
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getTelNr() {
-        return telNr;
-    }
-
-    public void setTelNr(String telNr) {
-        this.telNr = telNr;
-    }
-
-    public String getLicenseNr() {
-        return licenseNr;
-    }
-
-    public void setLicenseNr(String licenseNr) {
-        this.licenseNr = licenseNr;
-    }
-
-    public String getOrders() {
-        return orders;
-    }
-
-    public void setOrders(String orders) {
-        this.orders = orders;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
