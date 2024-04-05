@@ -38,4 +38,18 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to register customer");
         }
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginCustomer(@RequestParam String email, @RequestParam String password) {
+        // Find the customer by email
+        Customer customer = customerRepository.findByEmail(email);
+
+        if (customer != null && customer.getPassword().equals(password)) {
+            // Return success response with customer details
+            return ResponseEntity.ok(customer);
+        } else {
+            // Return error response if login fails
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+        }
+    }
 }
