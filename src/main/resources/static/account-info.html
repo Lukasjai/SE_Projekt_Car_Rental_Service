@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .booking {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<h2>Account Information</h2>
+
+<h3>Past Bookings</h3>
+<div class="booking">
+    <p>Date: January 1, 2024</p>
+    <p>Car: Model A (Brand A)</p>
+    <p>Cost: $50</p>
+</div>
+<div class="booking">
+    <p>Date: February 15, 2024</p>
+    <p>Car: Model B (Brand B)</p>
+    <p>Cost: $60</p>
+</div>
+
+<h3>Current Bookings</h3>
+<div class="booking">
+    <p>Date: April 5, 2024</p>
+    <p>Car: Model C (Brand C)</p>
+    <p>Cost: $70</p>
+</div>
+
+<h3>Account Settings</h3>
+<form id="accountSettingsForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="John Doe" required>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="john@example.com" required>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <input type="submit" value="Save Changes">
+</form>
+
+<script>
+    document.getElementById("updateAccountForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+        var form = event.target;
+        var email = form.elements["email"].value;
+
+        // Fetch customer ID by email
+        fetch("/customers/id?email=" + email)
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error("Customer not found");
+                }
+            })
+            .then(customerId => {
+                // Retrieve other form fields for account info update
+                var name = form.elements["name"].value;
+                // Retrieve other fields as needed
+
+                // Call updateCustomer method with retrieved ID
+                updateCustomer(customerId, name /*, other fields */);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Customer not found. Please check the email address.");
+            });
+    });
+
+    function updateCustomer(customerId, name /*, other fields */) {
+        // Construct the request payload
+        var payload = {
+            id: customerId,
+            name: name
+            // Include other fields in the payload as needed
+        };
+
+        // Send update request to backend
+        fetch("/customers//update/{customerId}", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("Account information updated successfully!");
+                } else {
+                    throw new Error("Failed to update account information");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while updating account information. Please try again later.");
+            });
+    }
+</script>
+
+</body>
+</html>

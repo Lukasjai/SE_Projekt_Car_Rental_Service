@@ -68,6 +68,7 @@
             .then(response => {
                 if (response.ok) {
                     alert("Login successful!");
+                    window.location.href = "/account-info.html";
                 } else {
                     alert("Login failed. Please check your email and password.");
                 }
