@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.Customer;
 import org.example.CustomerRepository;
 import org.springframework.http.HttpStatus;
@@ -42,17 +43,35 @@ public class CustomerController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginCustomer(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<?> loginCustomer(HttpSession session, @RequestParam String email, @RequestParam String password) {
         // Find the customer by email
         Customer customer = customerRepository.findByEmail(email);
 
         if (customer != null && customer.getPassword().equals(password)) {
+            // Store customer ID in session
+            session.setAttribute("customerId", customer.getId());
+
             // Return success response with customer details
             return ResponseEntity.ok(customer);
         } else {
             // Return error response if login fails
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
+    }
+
+    @GetMapping("/userinfo")
+    public ResponseEntity<?> getUserInfo(HttpSession session) {
+        // Retrieve user information from session
+        Long userId = (Long) session.getAttribute("userId");
+        // Use userId to fetch user data or perform other operations
+        return ResponseEntity.ok(userId);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        // Invalidate session on logout
+        session.invalidate();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/id?email=")
