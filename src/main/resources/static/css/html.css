@@ -1,0 +1,26 @@
+@font-face {
+    font-family: Helvetica-UC;
+    src: url(/fonts/Helvetica\ Ultra\ Compressed.otf) format('opentype');
+}
+
+body{
+    position: relative;
+    height: 95vh;
+    overflow: hidden;
+    font-family: Helvetica-UC;
+}
+
+#slogendiv{
+    width: 100%;
+    background-color: #f34b2b;
+    position: absolute;
+    bottom: 0;
+    z-index: auto;
+}
+
+#slogen{
+    font-size: 70px;
+    text-align: center;
+    color: white;
+
+}

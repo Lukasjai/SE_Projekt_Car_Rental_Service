@@ -65,7 +65,8 @@
         })
             .then(response => {
                 if (response.ok) {
-                    alert("Registration successful!");
+                    //alert("Registration successful!");
+                    window.location.href = "/login.html";
                 } else {
                     alert("Registration failed. Please try again.");
                 }
