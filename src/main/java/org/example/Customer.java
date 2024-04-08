@@ -16,9 +16,6 @@ public class Customer {
     private String name;
     private String email;
     private String password;
-    // Add more fields as needed
-
-    // Constructors, getters, and setters
     public Customer() {
     }
 
