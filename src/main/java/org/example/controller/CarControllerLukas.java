@@ -76,43 +76,6 @@ public class CarControllerLukas {
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-    private DatabaseConnection databaseConnection;
-
-    //Change this parameters to the one inserted in the frontend
-    private String car_brand_name = "FIAT";
-
-
-
-    String insertQuery = "INSERT INTO car_inventory (car_brand_name, car_model_name, number_of_seats, is_booked, prices) VALUES (?, ?, ?, ?, ?)";
-    public CarControllerLukas(DatabaseConnection databaseConnection){
-        this.databaseConnection = databaseConnection;
-    }
-
-
-    public void addNewCarToDatabase(){
-
-        databaseConnection = DatabaseConnection.get
-
-        PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-
-    }
-
-
-     */
     public static void main(String[] args) {
         MariaDB databaseConnection = new MariaDB();
 
