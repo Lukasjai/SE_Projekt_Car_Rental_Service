@@ -3,10 +3,13 @@ package org.example.controller;
 import jakarta.servlet.http.HttpSession;
 import org.example.Customer;
 import org.example.CustomerRepository;
+import org.example.database.MariaDB;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.Optional;
 
 @RestController
@@ -14,11 +17,20 @@ import java.util.Optional;
 public class CustomerController {
 
     private final CustomerRepository customerRepository;
+    private MariaDB databaseConnection = new MariaDB();
+    private String customer_firstname;
+    private String customer_lastname;
+    private String customer_telephone_number;
+    private int licence_number = 123;
+    private String insertQuery = "INSERT INTO customers (customer_firstname, customer_lastname, customer_telephone_number, licence_number) VALUES (?, ?, ?, ?)";
 
     public CustomerController(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
+  
 
+
+    @CrossOrigin
     @PostMapping("/register")
     public ResponseEntity<?> registerCustomer(@RequestParam String name, @RequestParam String email, @RequestParam String password) {
         try {
@@ -26,8 +38,24 @@ public class CustomerController {
             customer.setName(name);
             customer.setEmail(email);
             customer.setPassword(password);
+            this.customer_firstname = name;
+            this.customer_lastname = email;
+            this.customer_telephone_number = password;
+            Connection connection = databaseConnection.getConnection();
+            insertQuery = "INSERT INTO customers (customer_firstname, customer_lastname, customer_telephone_number, licence_number) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
 
             //ToDo: Validation Checks
+            preparedStatement.setString(1, this.customer_firstname);
+            preparedStatement.setString(2, this.customer_lastname);
+            preparedStatement.setString(3, this.customer_telephone_number);
+            preparedStatement.setInt(4, this.licence_number);
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println(rowsAffected + " row(s) inserted.");
+
+            // Close resources
+            preparedStatement.close();
+            connection.close();
 
             Customer savedCustomer = customerRepository.save(customer);
 

@@ -59,13 +59,14 @@ public class CustomerControllerLukas {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
+                int customer_id = resultSet.getInt("customer_id");
                 String customer_firstname = resultSet.getString("customer_firstname");
                 String customer_lastname = resultSet.getString("customer_lastname");
                 String customerTelephoneNumber = resultSet.getString("customer_telephone_number");
                 int licenceNumber = resultSet.getInt("licence_number");
 
 
-                System.out.println("Customer: First Name - " + customer_firstname + ", Last Name - " + customer_lastname + ", telephone number - " + customer_telephone_number + ", licence number: - " + licence_number);
+                System.out.println("Customer ID: " + customer_id + ", Customer: First Name - " + customer_firstname + ", Last Name - " + customer_lastname + ", telephone number - " + customer_telephone_number + ", licence number: - " + licence_number);
             }
 
             resultSet.close();
