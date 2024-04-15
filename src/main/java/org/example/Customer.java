@@ -13,14 +13,16 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String vorname;
+    private  String nachname;
     private String email;
     private String password;
     public Customer() {
     }
 
-    public Customer(String name, String email, String password) {
-        this.name = name;
+    public Customer(String vorname, String nachname, String email, String password) {
+        this.vorname = vorname;
+        this.nachname = nachname;
         this.email = email;
         this.password = password;
     }
@@ -34,13 +36,22 @@ public class Customer {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getfirstName() {
+        return vorname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setfirstName(String vorname) {
+        this.vorname = vorname;
     }
+
+    public String getlastName() {
+        return nachname;
+    }
+
+    public void setlastName(String nachname) {
+        this.nachname = nachname;
+    }
+
 
     public String getEmail() {
         return email;

@@ -40,7 +40,6 @@ public class CustomerControllerLukas {
             preparedStatement.setString(3, customer_telephone_number);
             preparedStatement.setInt(4, licence_number);
 
-
             // Execute the INSERT statement
             int rowsAffected = preparedStatement.executeUpdate();
             System.out.println(rowsAffected + " row(s) inserted.");
