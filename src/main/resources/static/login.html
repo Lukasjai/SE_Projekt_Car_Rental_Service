@@ -2,12 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-        <html lang="en">
-        <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>User Login</title>
+    <title>User Login</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -68,22 +63,43 @@
             .then(response => {
                 if (response.ok) {
                     alert("Login successful!");
-                    window.location.href = "/account-info.html";
+                    // Call the /token endpoint to retrieve the JWT token
+                    fetch('/token', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: formData.get('email'),
+                            password: formData.get('password')
+                        })
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.text();
+                            } else {
+                                throw new Error('Failed to retrieve token');
+                            }
+                        })
+                        .then(token => {
+                            // Store the token securely (e.g., in local storage)
+                            localStorage.setItem('accessToken', token);
+                            // Redirect to account info page
+                            window.location.href = "/account-info.html";
+                        })
+                        .catch(error => {
+                            console.error('Token retrieval error:', error);
+                            alert("An error occurred while retrieving token.");
+                        });
                 } else {
                     alert("Login failed. Please check your email and password.");
                 }
             })
             .catch(error => {
-                console.error("Error:", error);
-                alert("An error occurred. Please try again later.");
+                console.error("Login error:", error);
+                alert("An error occurred during login. Please try again later.");
             });
     });
 </script>
-</body>
-</html>
-</title>
-</head>
-<body>
-
 </body>
 </html>
