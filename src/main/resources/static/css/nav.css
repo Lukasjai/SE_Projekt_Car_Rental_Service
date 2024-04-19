@@ -48,8 +48,7 @@
   .navbar .nav-container a:hover{
     font-family: Helvetica-UC;
     font-weight: bolder;
-    color: #f34b2b;
-    
+    color: #f34b2b; 
 }
 
 .nav-container {
@@ -152,6 +151,7 @@
   .nav-container input[type="checkbox"]:checked ~ .logo{
     display: none;
   }
+
 
 
 
