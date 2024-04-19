@@ -1,11 +1,27 @@
 package org.example.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 public class CustomerDto {
+
+    @NotNull
+    @NotEmpty
     private String firstName;
+    @NotNull
+    @NotEmpty
     private String lastName;
+    @NotNull
+    @NotEmpty
     private String phoneNumber;
+    @NotNull
+    @NotEmpty
     private int licenceNumber;
+    @NotNull
+    @NotEmpty
     private String email;
+    @NotNull
+    @NotEmpty
     private String password;
 
     public CustomerDto() {
