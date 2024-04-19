@@ -9,14 +9,15 @@
 }
 
 body{
-    background-image:url(../img/bgImage-logo.png);
+    background-image:url(../img/bgImage-logo-dark.png);
     background-color: black;
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center top; 
     font-family: Helvetica, Arial, sans-serif;
-
+    color: white;
+    
 }
 
 /*Home Navbar Rent & Show stations*/
@@ -67,17 +68,18 @@ body{
 
   #LoMa{
     float: right;
+    font-family: Helvetica-UC;
   }
 
-  .home-links{
+  #LoMa ul{
+    list-style-type: none;
+  }
+
+  .home-links, .home-links:visited {
     text-decoration: none;
     color: white;
     font-size: 30px;
     padding-right: 20px;
-  }
-
-  .home-links li{
-    list-style: none;
   }
 
   .home-links:hover{
@@ -89,6 +91,15 @@ body{
     filter: invert(100%);
 
   }
+
+  .current{
+    text-decoration: none;
+    color: white;
+    font-size: 30px;
+    padding-right: 20px;
+    color: #f34b2b;
+  }
+
 
 
 
