@@ -6,7 +6,7 @@
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <link href="css/style.css" type="text/css" rel="stylesheet">
     <link href="css/nav.css" type="text/css" rel="stylesheet">
-    <link href="css/html.css" type="text/css" rel="stylesheet">
+    <link href="css/index.css" type="text/css" rel="stylesheet">
     <title>OnTheMove Car Rentals</title>
 </head>
 <body>
@@ -23,30 +23,34 @@
             <div class="logo">
             </div>
             <div class="menu-items">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Rent</a></li>
-                <li><a href="#">Show stations</a></li>
-                <li><a href="#">Manage bookings</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a class="currentNav" href="index.html">Home</a></li>
+                <li><a href="rent.html">Rent</a></li>
+                <li><a href="showstations.html">Show stations</a></li>
+                <li><a href="manageBookings.html">Manage bookings</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </div>
         </div>
         </div>
     </nav>
 
     <div id="LoMa">
-        <li>
-            <img class="LoMa-icon" src="/img/user.png" alt=""> <a class="home-links" href="#">Login | Register</a>
-        </li>
-        <li>
-            <img class="LoMa-icon" src="img/car.png" alt=""> <a class="home-links" href="#">Manage bookings</a>
-        </li>
-        
-        
+        <ul>
+            <li>
+                <img class="LoMa-icon" src="img/home.png" alt=""> <a class="current" class="home-links" href="index.html">Home</a>
+            </li>
+            <li>
+                <img class="LoMa-icon" src="img/user.png" alt=""> <a class="home-links" href="login.html">Login | Register</a>
+            </li>
+            <li>
+                <img class="LoMa-icon" src="img/car.png" alt=""> <a class="home-links" href="manageBookings.html">Manage bookings</a>
+            </li> 
+        </ul>
     </div>
 
     <div id="twonavbar">
-        <button class="btn">Rent</button>
-        <button class="btn">Show stations</button>
+        <a href="rent.html"><button class="btn">Rent</button></a>
+        <a href="showstations.html"><button class="btn">Show stations</button></a>
+        
     </div>
 
     <div id="slogendiv">
