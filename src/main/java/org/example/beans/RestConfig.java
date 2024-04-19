@@ -47,9 +47,10 @@ public class RestConfig {
         // @formatter:off
         http
                 .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/customers/register", "/customers/login", "/token", "/registration.html", "/login.html", "/index.html").permitAll()
                         .anyRequest().authenticated()
                 )
-                .csrf((csrf) -> csrf.ignoringRequestMatchers("/token"))
+                .csrf((csrf) -> csrf.ignoringRequestMatchers("/customers/register", "/customers/login", "/token", "/registration.html"))
                 .httpBasic(Customizer.withDefaults())
                 //.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .oauth2ResourceServer((rs) -> rs.jwt((jwt) ->jwt.decoder(jwtDecoder())))

@@ -42,7 +42,7 @@ public class CustomerController {
         Customer customer = customerRepository.findByEmail(email);
 
         if (customer != null && customer.getPassword().equals(password)) {
-            session.setAttribute("customerId", customer.getId());
+            //session.setAttribute("customerId", customer.getId());
 
             return ResponseEntity.ok(customer);
         } else {
