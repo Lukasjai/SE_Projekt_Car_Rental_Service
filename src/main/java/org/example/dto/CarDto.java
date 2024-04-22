@@ -35,8 +35,7 @@ public class CarDto {
             return car_model_name;
         }
 
-        public void setCar_model_name(String car_model_name) {
-            this.car_model_name = car_model_name;
+        public void setCar_model_name(String car_model_name) {this.car_model_name = car_model_name;
         }
 
 
