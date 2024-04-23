@@ -14,10 +14,10 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: center top;
+    background-position: center top; 
     font-family: Helvetica, Arial, sans-serif;
     color: white;
-
+    
 }
 
 /*Home Navbar Rent & Show stations*/
@@ -33,9 +33,9 @@ body{
     justify-content: space-between;
     padding: 0 20px;
     align-items: center;
-}
+  }
 
-.btn {
+  .btn {
     width: 180px;
     background: #1b1f24;
     background-image: -webkit-linear-gradient(top, #1b1f24, #283842);
@@ -51,9 +51,9 @@ body{
     font-size: 30px;
     padding: 10px 20px 10px 20px;
     text-decoration: none;
-}
-
-.btn:hover {
+  }
+  
+  .btn:hover {
     cursor: pointer;
     background: #283842;
     background-image: -webkit-linear-gradient(top, #283842, #1b1f24);
@@ -62,43 +62,43 @@ body{
     background-image: -o-linear-gradient(top, #283842, #1b1f24);
     background-image: linear-gradient(to bottom, #283842, #1b1f24);
     text-decoration: none;
-}
+  }
 
-/*Home Links top right corner Login|Register & Manage bookings*/
+  /*Home Links top right corner Login|Register & Manage bookings*/
 
-#LoMa{
+  #LoMa{
     float: right;
     font-family: Helvetica-UC;
-}
+  }
 
-#LoMa ul{
+  #LoMa ul{
     list-style-type: none;
-}
+  }
 
-.home-links, .home-links:visited {
+  .home-links, .home-links:visited {
     text-decoration: none;
     color: white;
     font-size: 30px;
     padding-right: 20px;
-}
+  }
 
-.home-links:hover{
+  .home-links:hover{
     color: #f34b2b;
-}
+  }
 
-.LoMa-icon{
+  .LoMa-icon{
     width: 25px;
     filter: invert(100%);
 
-}
+  }
 
-.current{
+  .current{
     text-decoration: none;
     color: white;
     font-size: 30px;
     padding-right: 20px;
     color: #f34b2b;
-}
+  }
 
 
 

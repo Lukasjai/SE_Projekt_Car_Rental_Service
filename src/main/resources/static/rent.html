@@ -6,9 +6,8 @@
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <link href="css/style.css" type="text/css" rel="stylesheet">
     <link href="css/nav.css" type="text/css" rel="stylesheet">
-    <link href="css/registration.css" type="text/css" rel="stylesheet">
-    <script defer src="js/registration.js"></script>
-
+    <link href="css/rent.css" type="text/css" rel="stylesheet">
+    <script defer src="js/rent.js"></script>
     <title>OnTheMove Car Rentals</title>
 </head>
 <body>
@@ -44,36 +43,29 @@
                 <img class="LoMa-icon" src="img/user.png" alt=""> <a class="home-links" href="login.html">Login | Register</a>
             </li>
             <li>
-                <img class="LoMa-icon" src="img/car.png" alt=""> <a class="current" class="home-links" href="#">Manage bookings</a>
+                <img class="LoMa-icon" src="img/car.png" alt=""> <a class="home-links" href="manageBookings.html">Manage bookings</a>
             </li> 
         </ul>
     </div>
 
+    <div id="rent">
+        <h1>Rent</h1>
 
-    <form id="registrationForm">
-        <h2>User Registration</h2>
-        
-        <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" name="firstName" required>
-       
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" name="lastName" required>
+        <div id="rentingCalender">
+            <form id="rentForm">
+                <label for="pickupDate">Pick-up Date:</label>
+                <input type="date" id="pickupDate" name="pickupDate" required>
+                
+                <label for="returnDate">Return Date:</label>
+                <input type="date" id="returnDate" name="returnDate" required>
+                
+                <button type="button" onclick="submitRentForm()">Go</button>
+            </form>
+        </div>
 
-        <label for="phoneNumber">Mobile Number:</label>
-        <input type="tel" id="phoneNumber" name="phoneNumber" required required style="width: 100%; height: 40px; margin-top: 10px; margin-bottom: 10px;">
         
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        
-        <label for="licenceNumber">Licence Number:</label>
-        <input type="text" id="licenceNumber" name="licenceNumber" required>
-        
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
 
-        <div><input type="submit" value="Register"></div>
-        
-    </form>
+    </div>
 
     
 </body>
