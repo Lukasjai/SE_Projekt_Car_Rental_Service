@@ -10,6 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 public interface CarRepository extends JpaRepository<Car, Long> {
-    List<Car> findByAvailabilityDateBetween(Date startDatum, Date endDatum);
+ //   List<Car> findByAvailabilityDateBetween(Date startDatum, Date endDatum);
 }
 

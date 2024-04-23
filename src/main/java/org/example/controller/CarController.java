@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import jakarta.servlet.http.HttpSession;
-import org.example.Car;
+import org.example.model.Car;
 import org.example.repository.CarRepository;
 import org.example.service.CarService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,10 +28,10 @@ public class CarController {
     private final AtomicLong counter = new AtomicLong();
 
     @PostMapping("/verfuegbar")
-    public ResponseEntity<List<org.example.model.Car>> findAvailableCars(@RequestParam("pick_up_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+    public ResponseEntity<?> findAvailableCars(@RequestParam("pick_up_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                                                          @RequestParam("bring_back_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
-        List<org.example.model.Car> availableCars = carRepository.findByAvailabilityDateBetween(startDate, endDate);
-        return ResponseEntity.ok(availableCars);
+   //     List<org.example.model.Car> availableCars = carRepository.findByAvailabilityDateBetween(startDate, endDate);
+        return ResponseEntity.ok("");
     }
 
     public ResponseEntity<List<org.example.model.Car>> getAllCars() {
@@ -45,10 +45,10 @@ public class CarController {
         return ResponseEntity.ok(carId);
     }
 
-    @GetMapping("/rent")
+/*    @GetMapping("/rent")
     public Car rent(@RequestParam(value = "name", defaultValue = "Fiat") String name) {
         return new Car(counter.incrementAndGet(), String.format(template, name));
-    }
+    }*/
 
     }
 
@@ -68,6 +68,6 @@ public class CarController {
         System.out.println("todo");
         return ResponseEntity.notFound().build();
     }
-  */
+*/
 
 
