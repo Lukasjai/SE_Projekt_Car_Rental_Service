@@ -2,12 +2,14 @@ package org.example.controller;
 
 import org.example.dto.CustomerLoginDto;
 import org.example.dto.LoginResponseDto;
+import org.example.exception.EmailAlreadyInUseException;
 import org.example.model.Customer;
 import org.example.dto.CustomerDto;
 import org.example.service.CustomerService;
 import org.example.service.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,6 +29,8 @@ public class CustomerController {
         try {
             customerService.registerCustomer(customerDto);
             return ResponseEntity.status(HttpStatus.CREATED).body("Customer registered successfully");
+        } catch (EmailAlreadyInUseException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("The information provided cannot be used to create a new account. Please double-check your details or try different ones.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Customer registration failed");
         }
@@ -34,41 +38,24 @@ public class CustomerController {
 
     @PostMapping("/login")
     public ResponseEntity<?> loginCustomer(@RequestBody CustomerLoginDto loginCustomerDto) {
-        Customer loginCustomer = customerService.authenticateCustomer(loginCustomerDto);
+        try {
+            Customer loginCustomer = customerService.authenticateCustomer(loginCustomerDto);
 
-        String jwtToken = jwtService.generateToken(loginCustomer);
+            String jwtToken = jwtService.generateToken(loginCustomer);
 
-        LoginResponseDto loginResponseDto = new LoginResponseDto();
-        loginResponseDto.setJwtToken(jwtToken);
-        loginResponseDto.setJwtExpirationInMilliseconds(jwtService.getExpirationTime());
+            LoginResponseDto loginResponseDto = new LoginResponseDto();
+            loginResponseDto.setJwtToken(jwtToken);
+            loginResponseDto.setJwtExpirationInMilliseconds(jwtService.getExpirationTime());
 
-        return ResponseEntity.status(HttpStatus.OK).body(loginResponseDto);
-    }
-
-    /*@PostMapping("/login")
-    public ResponseEntity<?> loginCustomer(HttpSession session, @RequestParam String email, @RequestParam String password) {
-        Customer customer = customerRepository.findByEmail(email);
-
-        if (customer != null && customer.getPassword().equals(password)) {
-            session.setAttribute("customerId", customer.getId());
-
-            return ResponseEntity.ok(customer);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+            return ResponseEntity.status(HttpStatus.OK).body(loginResponseDto);
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Invalid credentials");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Customer login failed");
         }
-    }*/
-
-    /*@GetMapping("/userinfo")
-    public ResponseEntity<?> getUserInfo(HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
-        return ResponseEntity.ok(userId);
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpSession session) {
-        session.invalidate();
-        return ResponseEntity.ok().build();
-    }*/
+
 
     /*@GetMapping("/id?email=")
     public ResponseEntity<Long> findCustomerIdByEmail(@RequestParam String email) {
