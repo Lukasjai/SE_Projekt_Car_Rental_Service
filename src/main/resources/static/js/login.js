@@ -1,19 +1,25 @@
 document.getElementById("loginForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Prevent the form from submitting normally
-    var form = event.target;
-    var formData = new FormData(form); // Create FormData object from form data
-    // Send POST request to login endpoint
-    fetch(form.action, {
+    event.preventDefault();
+    const formData = {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+    }
+    fetch('/customers/login', {
         method: "POST",
-        body: formData
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
     })
         .then(response => {
             if (response.ok) {
-                alert("Login successful!");
-                window.location.href = "/account-info.html";
+                return response.json()
             } else {
                 alert("Login failed. Please check your email and password.");
             }
+        })
+        .then(responseData => {
+            window.location.href = "/index.html";
         })
         .catch(error => {
             console.error("Error:", error);
