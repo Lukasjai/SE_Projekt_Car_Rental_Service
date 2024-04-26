@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.CustomerLoginDto;
 import org.example.dto.LoginResponseDto;
@@ -63,6 +64,32 @@ public class CustomerController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Customer login failed");
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutCustomer(HttpServletResponse response) {
+        Cookie cookie = new Cookie("jwtToken", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok().body("Customer logged out successfully");
+    }
+
+    @GetMapping("/check-session")
+    public ResponseEntity<?> checkCustomerSession(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwtToken".equals(cookie.getName()) && jwtService.validateToken(cookie.getValue())) {
+                    return ResponseEntity.ok().body("Session is valid.");
+
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Session is not valid.");
     }
 
     /*@GetMapping("/id?email=")

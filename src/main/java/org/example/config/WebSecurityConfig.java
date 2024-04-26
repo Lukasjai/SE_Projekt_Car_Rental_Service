@@ -32,8 +32,9 @@ public class WebSecurityConfig {
                         .requestMatchers("/", "index.html", "registration.html").permitAll()
                         .requestMatchers(HttpMethod.POST, "/customers/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/customers/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/customers/logout").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/customers/check-session").permitAll()
                         .anyRequest().authenticated()
-
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

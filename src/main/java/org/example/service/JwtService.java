@@ -61,6 +61,18 @@ public class JwtService {
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token);
+            return true;
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            System.out.println("Token expired: " + e.getMessage());
+        } catch (io.jsonwebtoken.JwtException e) {
+            System.out.println("Invalid token: " + e.getMessage());
+        }
+        return false;
+    }
+
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
