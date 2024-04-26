@@ -10,8 +10,10 @@ function checkLoginState() {
         .then(response => {
             if (response.ok) {
                 updateLoginLinkToLogout();
+                document.getElementById('manageBookings').style.display = 'block';
             } else {
                 updateLoginLinkToLogin();
+                document.getElementById('manageBookings').style.display = 'none';
             }
         })
         .catch(error => {
