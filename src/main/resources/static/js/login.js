@@ -13,13 +13,12 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     })
         .then(response => {
             if (response.ok) {
-                return response.json()
+                window.location.href = "/index.html";
+                return response.json() // TODO: Das war ursprünglich drinnen. Bin mir unsicher ob das notwendig ist.
             } else {
                 alert("Login failed. Please check your email and password.");
+                return response.text().then(text => Promise.reject(text));
             }
-        })
-        .then(responseData => {
-            window.location.href = "/index.html";
         })
         .catch(error => {
             console.error("Error:", error);

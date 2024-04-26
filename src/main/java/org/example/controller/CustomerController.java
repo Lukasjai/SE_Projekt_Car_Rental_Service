@@ -1,5 +1,7 @@
 package org.example.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.CustomerLoginDto;
 import org.example.dto.LoginResponseDto;
 import org.example.exception.EmailAlreadyInUseException;
@@ -18,10 +20,12 @@ public class CustomerController {
 
     private final JwtService jwtService;
     private final CustomerService customerService;
+    private final HttpServletResponse httpServletResponse;
 
-    public CustomerController(JwtService jwtService, CustomerService customerService) {
+    public CustomerController(JwtService jwtService, CustomerService customerService, HttpServletResponse httpServletResponse) {
         this.jwtService = jwtService;
         this.customerService = customerService;
+        this.httpServletResponse = httpServletResponse;
     }
 
     @PostMapping("/register")
@@ -40,12 +44,18 @@ public class CustomerController {
     public ResponseEntity<?> loginCustomer(@RequestBody CustomerLoginDto loginCustomerDto) {
         try {
             Customer loginCustomer = customerService.authenticateCustomer(loginCustomerDto);
-
             String jwtToken = jwtService.generateToken(loginCustomer);
 
             LoginResponseDto loginResponseDto = new LoginResponseDto();
             loginResponseDto.setJwtToken(jwtToken);
             loginResponseDto.setJwtExpirationInMilliseconds(jwtService.getExpirationTime());
+
+            Cookie cookie = new Cookie("jwtToken", jwtToken);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
+            cookie.setPath("/");
+            cookie.setMaxAge((int) jwtService.getExpirationTime());
+            httpServletResponse.addCookie(cookie);
 
             return ResponseEntity.status(HttpStatus.OK).body(loginResponseDto);
         } catch (BadCredentialsException e) {
@@ -54,8 +64,6 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Customer login failed");
         }
     }
-
-
 
     /*@GetMapping("/id?email=")
     public ResponseEntity<Long> findCustomerIdByEmail(@RequestParam String email) {
