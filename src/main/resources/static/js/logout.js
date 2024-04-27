@@ -11,9 +11,11 @@ function checkLoginState() {
             if (response.ok) {
                 updateLoginLinkToLogout();
                 document.getElementById('manageBookings').style.display = 'block';
+                document.getElementById('twonavbar-box').style.display = 'block';
             } else {
                 updateLoginLinkToLogin();
                 document.getElementById('manageBookings').style.display = 'none';
+                document.getElementById('twonavbar-box').style.display = 'none';
             }
         })
         .catch(error => {
