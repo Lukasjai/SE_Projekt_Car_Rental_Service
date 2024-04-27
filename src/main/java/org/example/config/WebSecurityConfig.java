@@ -29,7 +29,7 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/css/**", "/js/**", "/fonts/**", "img/**").permitAll()
-                        .requestMatchers("/", "index.html", "registration.html").permitAll()
+                        .requestMatchers("/", "index.html", "registration.html", "contact.html").permitAll()
                         .requestMatchers(HttpMethod.POST, "/customers/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/customers/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/customers/logout").permitAll()
