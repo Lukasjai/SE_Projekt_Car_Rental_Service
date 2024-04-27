@@ -2,6 +2,7 @@ package org.example.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.example.dto.BookingRequestDto;
+import org.example.dto.CustomerBookingsResponseDto;
 import org.example.model.Car;
 import org.example.model.Customer;
 import org.example.model.Order;
@@ -12,6 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingService {
@@ -32,6 +36,30 @@ public class BookingService {
         Order order = bookingRequestDtoToOrder(bookingRequestDto, email);
 
         return orderRepository.save(order);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CustomerBookingsResponseDto> getAllBookingsForCurrentUser() {
+        String email = getCurrentUserEmail();
+        List<Order> customerOrders = orderRepository.findByCustomerEmail(email);
+
+        return customerOrders.stream()
+                .map(this::mapOrderToCustomerBookingsResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    private CustomerBookingsResponseDto mapOrderToCustomerBookingsResponseDto(Order order) {
+        Car car = order.getCar();
+
+        return new CustomerBookingsResponseDto(
+                car.getCar_brand_name(),
+                car.getCar_model_name(),
+                car.getNumber_of_seats(),
+                car.getPrices(),
+                order.getPickUpDate(),
+                order.getBringBackDate(),
+                order.getOrderDate()
+        );
     }
 
     private Order bookingRequestDtoToOrder(BookingRequestDto bookingRequestDto, String email) {
