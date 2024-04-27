@@ -3,3 +3,46 @@
     padding-left: 200px;
     padding-right: 200px;
 }
+
+h1{
+    padding-bottom: 20px;
+}
+
+#go-button, #bookButton{
+    font-weight: bold;
+    border-radius: 20px;
+    border: 1px solid black;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 15px;
+    background: #26363F;
+    padding: 5px 8px 5px 8px;
+    text-decoration: none;
+}
+
+#go-button:hover, #bookButton:hover {
+    cursor: pointer;
+    background: #f34c2b;
+    text-decoration: none;
+}
+
+#carsContainer{
+    padding-top: 50px;
+}
+
+#carTable{
+    padding-bottom: 40px;
+}
+
+#carTable td{
+    width: 200px;
+}
+
+input[type="date"]{
+    width: 150px;
+    height: 25px;
+    background-color: #26363F;
+    color: #ffffff;
+    border: 1px solid black;
+    border-radius: 10px;
+}
