@@ -8,6 +8,7 @@
     <link href="css/nav.css" type="text/css" rel="stylesheet">
     <link href="css/manageBookings.css" type="text/css" rel="stylesheet">
     <script defer src="/js/logout.js"></script>
+    <script defer src="/js/manageBookings.js"></script>
     <title>OnTheMove Car Rentals</title>
 </head>
 <body>
@@ -33,7 +34,6 @@
         </div>
         </div>
     </nav>
-
     <div id="LoMa">
         <ul>
             <li>
@@ -47,29 +47,21 @@
             </li> 
         </ul>
     </div>
-
-
     <div id="manageBookings">
         <h1>Manage Bookings</h1>
 
         <div id="currentBookings">
-            <h3>Current Bookings</h3> 
+            <h3>Current Bookings</h3>
             <table id="CurBookingTable">
                 <tr>
                     <th>Brand</th>
+                    <th>Model</th>
                     <th>Seat Number</th>
                     <th>Price</th>
-                  </tr>
-                  <tr>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                  </tr>
-                  <tr>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                  </tr>
+                    <th>Order Date</th>
+                    <th>Pickup Date</th>
+                    <th>Return Date</th>
+                </tr>
             </table>
         </div>
     </div>
