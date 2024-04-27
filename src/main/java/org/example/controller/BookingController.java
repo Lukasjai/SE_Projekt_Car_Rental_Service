@@ -2,13 +2,16 @@ package org.example.controller;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.example.dto.BookingRequestDto;
+import org.example.dto.CustomerBookingsResponseDto;
 import org.example.service.BookingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/bookings")
 public class BookingController {
 
     private final BookingService bookingService;
@@ -17,7 +20,7 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    @PostMapping("/book")
+    @PostMapping
     public ResponseEntity<String> bookCar(@RequestBody BookingRequestDto bookingRequestDto) {
         try {
             bookingService.bookCar(bookingRequestDto);
@@ -26,6 +29,16 @@ public class BookingController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid request");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred, please try again");
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getCurrentUserBookings() {
+        try {
+            List<CustomerBookingsResponseDto> orders = bookingService.getAllBookingsForCurrentUser();
+            return ResponseEntity.status(HttpStatus.OK).body(orders);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred, please try again");
         }
