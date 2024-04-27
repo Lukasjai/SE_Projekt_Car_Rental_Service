@@ -1,6 +1,6 @@
 package org.example.controller;
 
-import jakarta.persistence.EntityManager;
+
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.CustomerDto;
 import org.example.dto.CustomerLoginDto;
@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 
 import java.util.Objects;
 
@@ -70,8 +71,7 @@ class CustomerControllerTest {
 
     @Test
     void loginCustomerCredentialsValid() {
-        // Given
-        CustomerLoginDto loginDto = new CustomerLoginDto("tilly@tilly.com", "pw123");
+        CustomerLoginDto loginDto = new CustomerLoginDto("validEmail", "validPassword");
         Customer loginCustomer = new Customer();
         String jwtToken = "mockJwtToken";
 
@@ -86,5 +86,15 @@ class CustomerControllerTest {
         verify(httpServletResponse, times(1)).addCookie(any());
         verify(customerService, times(1)).authenticateCustomer(loginDto);
         verify(jwtService, times(1)).generateToken(loginCustomer);
+    }
+
+    @Test
+    void loginCustomerCredentialsInvalid() {
+        CustomerLoginDto loginDto = new CustomerLoginDto("invalidEmail", "invalidPassword");
+        when(customerService.authenticateCustomer(loginDto)).thenThrow(BadCredentialsException.class);
+        ResponseEntity<?> responseEntity = customerController.loginCustomer(loginDto);
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertEquals("Invalid credentials", responseEntity.getBody());
+        verify(customerService, times(1)).authenticateCustomer(loginDto);
     }
 }
