@@ -1,6 +1,6 @@
 @font-face {
     font-family: Helvetica-UC;
-    src: url(/fonts/Helvetica\ Ultra\ Compressed.otf) format('opentype');
+    src: url(../fonts/HelveticaUltraCompressed.otf) format('opentype');
 }
 
 body{
