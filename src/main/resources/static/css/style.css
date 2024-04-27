@@ -33,9 +33,9 @@ body{
     justify-content: space-between;
     padding: 0 20px;
     align-items: center;
-  }
+}
 
-  .btn {
+.twonavbar-btn {
     width: 180px;
     background: #1b1f24;
     background-image: -webkit-linear-gradient(top, #1b1f24, #283842);
@@ -51,9 +51,9 @@ body{
     font-size: 30px;
     padding: 10px 20px 10px 20px;
     text-decoration: none;
-  }
-  
-  .btn:hover {
+}
+
+.twonavbar-btn:hover {
     cursor: pointer;
     background: #283842;
     background-image: -webkit-linear-gradient(top, #283842, #1b1f24);
@@ -62,7 +62,7 @@ body{
     background-image: -o-linear-gradient(top, #283842, #1b1f24);
     background-image: linear-gradient(to bottom, #283842, #1b1f24);
     text-decoration: none;
-  }
+}
 
   /*Home Links top right corner Login|Register & Manage bookings*/
 
