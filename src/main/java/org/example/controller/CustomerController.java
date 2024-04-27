@@ -85,48 +85,9 @@ public class CustomerController {
             for (Cookie cookie : cookies) {
                 if ("jwtToken".equals(cookie.getName()) && jwtService.validateToken(cookie.getValue())) {
                     return ResponseEntity.ok().body("Session is valid.");
-
                 }
             }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Session is not valid.");
     }
-
-    /*@GetMapping("/id?email=")
-    public ResponseEntity<Long> findCustomerIdByEmail(@RequestParam String email) {
-        Optional<Customer> customerOptional = Optional.ofNullable(customerRepository.findByEmail(email));
-        if (customerOptional.isPresent()) {
-            return ResponseEntity.ok(customerOptional.get().getId());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }*/
-
-    /*@PatchMapping("/update/{customerId}")
-    public ResponseEntity<?> updateCustomer(@PathVariable Long customerId, @RequestBody Customer updatedCustomer) {
-        try {
-            Customer existingCustomer = customerRepository.findById(customerId).orElse(null);
-
-            if (existingCustomer != null) {
-                if (updatedCustomer.getfirstName() != null) {
-                    existingCustomer.setfirstName(updatedCustomer.getfirstName());
-                }
-                if (updatedCustomer.getlastName() != null) {
-                    existingCustomer.setlastName(updatedCustomer.getlastName());
-                }
-                if (updatedCustomer.getEmail() != null) {
-                    existingCustomer.setEmail(updatedCustomer.getEmail());
-                }
-                if (updatedCustomer.getPassword() != null) {
-                    existingCustomer.setPassword(updatedCustomer.getPassword());
-                }
-                Customer savedCustomer = customerRepository.save(existingCustomer);
-                return ResponseEntity.status(HttpStatus.OK).body(savedCustomer);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update customer");
-        }
-    }*/
 }
