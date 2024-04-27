@@ -33,9 +33,9 @@ function updateBookingTable(bookings) {
         const modelCell = row.insertCell(1);
         const seatsCell = row.insertCell(2);
         const priceCell = row.insertCell(3);
-        const orderDateCell = row.insertCell(4);
-        const pickupDateCell = row.insertCell(5);
-        const returnDateCell = row.insertCell(6);
+        const pickupDateCell = row.insertCell(4);
+        const returnDateCell = row.insertCell(5);
+        const orderDateCell = row.insertCell(6);
 
         brandCell.textContent = booking.carBrand;
         modelCell.textContent = booking.carModel;
