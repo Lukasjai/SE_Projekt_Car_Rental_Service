@@ -81,7 +81,7 @@ function bookCar(car) {
     let returnDate = document.getElementById('returnDate').value;
     const today = new Date().toISOString().split('T')[0];
 
-    fetch('/api/v1/book', {
+    fetch('/api/v1/bookings', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
