@@ -1,6 +1,6 @@
 function submitRentForm() {
-    var pickupDate = document.getElementById('pickupDate').value;
-    var returnDate = document.getElementById('returnDate').value;
+    let pickupDate = document.getElementById('pickupDate').value;
+    let returnDate = document.getElementById('returnDate').value;
     const today = new Date().toISOString().split('T')[0];
 
     if (!pickupDate || !returnDate) {
@@ -67,13 +67,42 @@ function displayCars(cars) {
         bookButton.addEventListener('click', () => {
             const confirmBooking = window.confirm(`Do you want to book ${car.car_brand_name} ${car.car_model_name}?`);
             if (confirmBooking) {
-                alert(`You have booked ${car.car_brand_name} ${car.car_model_name}`);
-            } else {
-                alert(`Booking cancelled for ${car.car_brand_name} ${car.car_model_name}`);
+                bookCar(car)
             }
         });
 
         bookButtonCell.appendChild(bookButton);
         container.appendChild(carTable);
     });
+}
+
+function bookCar(car) {
+    let pickupDate = document.getElementById('pickupDate').value;
+    let returnDate = document.getElementById('returnDate').value;
+    const today = new Date().toISOString().split('T')[0];
+
+    fetch('/api/v1/book', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            carId: car.id,
+            pickupDate: pickupDate,
+            returnDate: returnDate,
+            orderDate: today,
+            price: car.prices
+        })
+    })
+        .then(response => {
+            if (response.status === 201) {
+                return alert(`You have booked ${car.car_brand_name} ${car.car_model_name}`)
+            } else {
+                return alert(`Booking failed for ${car.car_brand_name} ${car.car_model_name}`);
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            alert("An error occurred. Please try again later.");
+        })
 }
