@@ -25,7 +25,16 @@ function fetchBookings() {
 
 function updateBookingTable(bookings) {
     const table = document.getElementById('CurBookingTable');
-    table.innerHTML = '<tr><th>Brand</th><th>Model</th><th>Seat Number</th><th>Price</th><th>Order Date</th><th>Pickup Date</th><th>Return Date</th></tr>';
+    table.innerHTML = '<tr>' +
+        '<th>Brand</th>' +
+        '<th>Model</th>' +
+        '<th>Seat Number</th>' +
+        '<th>Price</th>' +
+        '<th>Order Date</th>' +
+        '<th>Pickup Date</th>' +
+        '<th>Return Date</th>' +
+        '<th>Order ID</th>' +
+        '</tr>';
 
     bookings.forEach(booking => {
         const row = table.insertRow(-1);
@@ -36,6 +45,7 @@ function updateBookingTable(bookings) {
         const pickupDateCell = row.insertCell(4);
         const returnDateCell = row.insertCell(5);
         const orderDateCell = row.insertCell(6);
+        const orderIdCell = row.insertCell(7)
 
         brandCell.textContent = booking.carBrand;
         modelCell.textContent = booking.carModel;
@@ -44,6 +54,7 @@ function updateBookingTable(bookings) {
         orderDateCell.textContent = formatDate(booking.orderDate);
         pickupDateCell.textContent = formatDate(booking.pickupDate);
         returnDateCell.textContent = formatDate(booking.returnDate);
+        orderIdCell.textContent = booking.orderId;
     });
 }
 
