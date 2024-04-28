@@ -12,6 +12,9 @@ public class CustomerBookingsResponseDto {
     private String carBrand;
 
     @NotEmpty
+    private long orderId;
+
+    @NotEmpty
     private String carModel;
 
     @NotNull
@@ -34,6 +37,7 @@ public class CustomerBookingsResponseDto {
 
     public CustomerBookingsResponseDto(
             String carBrand,
+            long orderId,
             String carModel,
             int carSeats,
             float carPrice,
@@ -42,6 +46,7 @@ public class CustomerBookingsResponseDto {
             LocalDate pickupDate
     ) {
         this.carBrand = carBrand;
+        this.orderId = orderId;
         this.carModel = carModel;
         this.carSeats = carSeats;
         this.carPrice = carPrice;
@@ -52,6 +57,10 @@ public class CustomerBookingsResponseDto {
 
     public String getCarBrand() {
         return carBrand;
+    }
+
+    public long getOrderId() {
+        return orderId;
     }
 
     public String getCarModel() {
