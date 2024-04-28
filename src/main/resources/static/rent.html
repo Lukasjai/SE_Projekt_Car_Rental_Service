@@ -51,6 +51,16 @@
     <div id="rent">
         <h1>Rent</h1>
 
+        <h3>Available Cars</h3>
+        <div class="currency-converter">
+            <div class="currency-select">
+                <select id="currency-dropdown">
+                    <option value="USD">USD $</option>
+                    <option value="EUR">EUR €</option>
+                    <option value="JPY">GBP £</option>
+                </select>
+            </div>
+        </div>
         <div id="rentingCalender">
             <form id="rentForm">
                 <label for="pickupDate">Pick-up Date:</label>
@@ -62,6 +72,8 @@
                 <button type="button" id="go-button" onclick="submitRentForm()">Go</button>
             </form>
         </div>
+
+
 
         <div id="carsContainer"></div>
 

@@ -36,3 +36,21 @@ th, td {
 #deleteButton:hover{
     background-color: #0e2431;
 }
+
+.currency-converter {
+    float: right;
+}
+
+.currency-select {
+    display: inline-block;
+    color: #ffffff;
+    font-size: 15px;
+    background: #26363F;
+}
+
+#currency-dropdown {
+    padding: 5px;
+    color: #ffffff;
+    font-size: 15px;
+    background: #26363F;
+}
