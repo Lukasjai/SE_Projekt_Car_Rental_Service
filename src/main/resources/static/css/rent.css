@@ -4,8 +4,11 @@
     padding-right: 200px;
 }
 
-h1{
-    padding-bottom: 20px;
+h3{
+    background-color: #f34b2b;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 5px;
 }
 
 #go-button, #bookButton{
@@ -45,4 +48,22 @@ input[type="date"]{
     color: #ffffff;
     border: 1px solid black;
     border-radius: 10px;
+}
+
+.currency-converter {
+    float: right;
+}
+
+.currency-select {
+    display: inline-block;
+    color: #ffffff;
+    font-size: 15px;
+    background: #26363F;
+}
+
+#currency-dropdown {
+    padding: 5px;
+    color: #ffffff;
+    font-size: 15px;
+    background: #26363F;
 }

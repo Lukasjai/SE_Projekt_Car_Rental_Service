@@ -4,7 +4,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
         email: document.getElementById('email').value,
         password: document.getElementById('password').value
     }
-    fetch('/customers/login', {
+    fetch('api/v1/customers/login', {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',

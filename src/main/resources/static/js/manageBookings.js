@@ -34,6 +34,7 @@ function updateBookingTable(bookings) {
         '<th>Pickup Date</th>' +
         '<th>Return Date</th>' +
         '<th>Order ID</th>' +
+        '<th></th>' +
         '</tr>';
 
     bookings.forEach(booking => {
@@ -55,7 +56,41 @@ function updateBookingTable(bookings) {
         pickupDateCell.textContent = formatDate(booking.pickupDate);
         returnDateCell.textContent = formatDate(booking.returnDate);
         orderIdCell.textContent = booking.orderId;
+
+        const deleteButtonCell = row.insertCell(8);
+        const deleteButton = document.createElement('button');
+        deleteButton.id = 'deleteButton';
+        deleteButton.textContent = '✖';
+        deleteButton.onclick = function() {
+            const confirmDeleteBooking = window.confirm(`Do you want to delete the Booking for ${booking.carBrand} ${booking.carModel}?`);
+            if(confirmDeleteBooking){
+                deleteBooking(booking.orderId, booking.carBrand, booking.carModel);
+            }
+        };
+
+
+        deleteButtonCell.appendChild(deleteButton);
     });
+}
+
+function deleteBooking(orderId, carBrand, carModel) {
+    fetch(`/api/v1/bookings/${orderId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(response => {
+            if (response.status === 200) {
+                alert(`Booking deleted successfully for ${carBrand} ${carModel}`);
+                fetchBookings(); // Refresh the list after deletion
+            } else {
+                alert(`Deleting failed for ${carBrand} ${carModel}`);
+            }
+        })
+        .catch(error => {
+            alert(`There was a problem with the delete operation: ${error}`);
+        });
 }
 
 function formatDate(dateString) {

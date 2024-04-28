@@ -2,7 +2,6 @@ package org.example.controller;
 
 import java.util.List;
 
-import jakarta.servlet.http.HttpSession;
 import org.example.dto.CarAvailabilityDto;
 import org.example.model.Car;
 import org.example.service.CarService;
@@ -11,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/cars")
+@RequestMapping("/api/v1/cars")
 public class CarController {
 
     private final CarService carService;
@@ -20,16 +19,10 @@ public class CarController {
         this.carService = carService;
     }
 
-    @PostMapping("/availability")
+    @PostMapping
     public ResponseEntity<?> findAvailableCars(@RequestBody CarAvailabilityDto carAvailabilityDto) {
         List<Car> availableCars = carService.findAvailableCars(carAvailabilityDto.getPickupDate(), carAvailabilityDto.getReturnDate());
 
         return ResponseEntity.status(HttpStatus.OK).body(availableCars);
-    }
-
-    @GetMapping("/carinfo")
-    public ResponseEntity<?> getUserInfo(HttpSession session) {
-        Long carId = (Long) session.getAttribute("carId");
-        return ResponseEntity.ok(carId);
     }
 }
