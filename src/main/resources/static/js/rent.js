@@ -18,7 +18,7 @@ function submitRentForm() {
         return;
     }
 
-    fetch('/cars/availability', {
+    fetch('/api/v1/cars', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -45,6 +45,7 @@ function submitRentForm() {
 
 function displayCars(cars) {
     const container = document.getElementById('carsContainer');
+    container.innerHTML = '';
     cars.forEach(car => {
         const carTable = document.createElement('table');
         carTable.id = 'carTable';
