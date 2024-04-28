@@ -43,4 +43,18 @@ public class BookingController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred, please try again");
         }
     }
+
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<String> deleteBooking(@PathVariable("orderId") long orderId) {
+        try {
+            bookingService.deleteBookingForCurrentUser(orderId);
+            return ResponseEntity.status(HttpStatus.OK).body("Booking deleted successfully");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Booking not found");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid request");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred, please try again");
+        }
+    }
 }
