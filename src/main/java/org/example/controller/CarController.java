@@ -2,7 +2,6 @@ package org.example.controller;
 
 import java.util.List;
 
-import jakarta.servlet.http.HttpSession;
 import org.example.dto.CarAvailabilityDto;
 import org.example.model.Car;
 import org.example.service.CarService;
@@ -25,11 +24,5 @@ public class CarController {
         List<Car> availableCars = carService.findAvailableCars(carAvailabilityDto.getPickupDate(), carAvailabilityDto.getReturnDate());
 
         return ResponseEntity.status(HttpStatus.OK).body(availableCars);
-    }
-
-    @GetMapping("/carinfo")
-    public ResponseEntity<?> getUserInfo(HttpSession session) {
-        Long carId = (Long) session.getAttribute("carId");
-        return ResponseEntity.ok(carId);
     }
 }
