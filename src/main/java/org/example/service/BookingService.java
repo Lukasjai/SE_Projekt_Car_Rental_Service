@@ -48,11 +48,25 @@ public class BookingService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void deleteBookingForCurrentUser(long orderId) {
+        String currentUserEmail = getCurrentUserEmail();
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found"));
+
+        if (!order.getCustomer().getEmail().equals(currentUserEmail)) {
+            throw new IllegalStateException("Cannot delete booking for a different user");
+        }
+
+        orderRepository.deleteById(orderId);
+    }
+
     private CustomerBookingsResponseDto mapOrderToCustomerBookingsResponseDto(Order order) {
         Car car = order.getCar();
 
         return new CustomerBookingsResponseDto(
                 car.getCar_brand_name(),
+                order.getOrderId(),
                 car.getCar_model_name(),
                 car.getNumber_of_seats(),
                 car.getPrices(),
