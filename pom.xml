@@ -141,6 +141,38 @@
             <version>4.0.0</version>
         </dependency>
 
+        <!-- consuming webservice tutorial -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web-services</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/jakarta.xml.ws/jakarta.xml.ws-api -->
+        <dependency>
+            <groupId>jakarta.xml.ws</groupId>
+            <artifactId>jakarta.xml.ws-api</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.sun.xml.ws/jaxws-rt -->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.sun.xml.ws/jaxws-ri -->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-ri</artifactId>
+            <version>4.0.1</version>
+            <type>pom</type>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -148,6 +180,27 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.sun.xml.ws</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>4.0.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <wsdlUrls>
+                        <wsdlUrl>http://localhost:9001/CurrencyConverter.asmx</wsdlUrl>
+                    </wsdlUrls>
+                    <packageName>org.example.currenyConverterConnection</packageName>
+                    <sourceDestDir>
+                        src/main/java
+                    </sourceDestDir>
+                </configuration>
             </plugin>
         </plugins>
     </build>
