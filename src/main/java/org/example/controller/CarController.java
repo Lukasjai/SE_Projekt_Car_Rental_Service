@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/cars")
+@RequestMapping("/api/v1/cars")
 public class CarController {
 
     private final CarService carService;
@@ -19,7 +19,7 @@ public class CarController {
         this.carService = carService;
     }
 
-    @PostMapping("/availability")
+    @PostMapping
     public ResponseEntity<?> findAvailableCars(@RequestBody CarAvailabilityDto carAvailabilityDto) {
         List<Car> availableCars = carService.findAvailableCars(carAvailabilityDto.getPickupDate(), carAvailabilityDto.getReturnDate());
 
