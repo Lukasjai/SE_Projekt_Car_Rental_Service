@@ -8,7 +8,7 @@ document.getElementById("registrationForm").addEventListener("submit", function 
         phoneNumber: document.getElementById('phoneNumber').value,
         licenceNumber: document.getElementById('licenceNumber').value
     };
-    fetch('/customers/register', {
+    fetch('api/v1/customers/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
