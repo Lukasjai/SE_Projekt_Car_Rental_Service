@@ -197,9 +197,9 @@
                         <wsdlUrl>http://localhost:9001/CurrencyConverter.asmx</wsdlUrl>
                     </wsdlUrls>
                     <packageName>org.example.currenyConverterConnection</packageName>
-                    <sourceDestDir>
-                        src/main/java
-                    </sourceDestDir>
+                    <sourceDestDir>${sourcesDir}</sourceDestDir>
+                    <destDir>${classesDir}</destDir>
+                    <extension>true</extension>
                 </configuration>
             </plugin>
         </plugins>
