@@ -16,12 +16,23 @@
 }
 
 table{
-    margin-left: 50px;
     border-collapse: collapse;
-    width: 40%;
+    width: 100%;
 }
 
 th, td {
     padding: 8px;
     text-align: left;
-  }
+}
+
+#deleteButton{
+    background-color: black;
+    color: white;
+    width: 30px;
+    border: 0px;
+    cursor: pointer;
+    border: 1px solid #283842;
+}
+#deleteButton:hover{
+    background-color: #0e2431;
+}
