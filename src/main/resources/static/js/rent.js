@@ -18,29 +18,7 @@ function submitRentForm() {
         return;
     }
 
-    fetch('/api/v1/cars', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            pickupDate: pickupDate,
-            returnDate: returnDate
-        })
-    })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error('Request failed!');
-        })
-        .then(data => {
-            console.log(data)
-            displayCars(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+    fetchCars(pickupDate, returnDate);
 }
 
 function displayCars(cars) {
@@ -50,6 +28,7 @@ function displayCars(cars) {
         const carTable = document.createElement('table');
         carTable.id = 'carTable';
         const carRow = carTable.insertRow();
+        carRow.id = `carRow-${car.id}`;
 
         const brandCell = carRow.insertCell();
         const modelCell = carRow.insertCell();
@@ -97,13 +76,41 @@ function bookCar(car) {
     })
         .then(response => {
             if (response.status === 201) {
-                return alert(`You have booked ${car.car_brand_name} ${car.car_model_name}`)
+                alert(`You have booked ${car.car_brand_name} ${car.car_model_name}`);
+                fetchCars(pickupDate, returnDate);
             } else {
-                return alert(`Booking failed for ${car.car_brand_name} ${car.car_model_name}`);
+                alert(`Booking failed for ${car.car_brand_name} ${car.car_model_name}`);
             }
         })
+
         .catch(error => {
             console.log(error)
             alert("An error occurred. Please try again later.");
         })
+}
+
+function fetchCars(pickupDate, returnDate) {
+    fetch('/api/v1/cars', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            pickupDate: pickupDate,
+            returnDate: returnDate
+        })
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Request failed!');
+        })
+        .then(data => {
+            console.log(data);
+            displayCars(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
