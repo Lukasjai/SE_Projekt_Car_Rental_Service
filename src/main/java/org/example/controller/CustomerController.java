@@ -78,6 +78,21 @@ public class CustomerController {
         return ResponseEntity.ok().body("Customer logged out successfully");
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<CustomerDto> getProfile(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwtToken".equals(cookie.getName()) && jwtService.validateToken(cookie.getValue())) {
+                   CustomerDto customer = customerService.getCustomerInfo(jwtService.extractUsername(cookie.getValue()));
+                   return ResponseEntity.status(HttpStatus.OK).body(customer);
+                }
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
     @GetMapping("/check-session")
     public ResponseEntity<?> checkCustomerSession(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
