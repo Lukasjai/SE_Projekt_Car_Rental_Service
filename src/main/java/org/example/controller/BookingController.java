@@ -3,10 +3,13 @@ package org.example.controller;
 import jakarta.persistence.EntityNotFoundException;
 import org.example.dto.BookingRequestDto;
 import org.example.dto.CustomerBookingsResponseDto;
+import org.example.model.Car;
 import org.example.service.BookingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.example.currencyConverter.CurrencyConverter;
+
 
 import java.util.List;
 
@@ -35,9 +38,17 @@ public class BookingController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getCurrentUserBookings() {
+    public ResponseEntity<?> getCurrentUserBookings(@RequestParam String currency) {
         try {
             List<CustomerBookingsResponseDto> orders = bookingService.getAllBookingsForCurrentUser();
+            CurrencyConverter currencyConverter = new CurrencyConverter();
+
+            for (CustomerBookingsResponseDto customerBookingsResponseDto : orders) {
+                System.out.println("update PRice");
+                double convertedPrice = currencyConverter.convertCurrency(customerBookingsResponseDto.getCarPrice(), "USD", currency);
+                customerBookingsResponseDto.setCarPrice((float) convertedPrice);
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body(orders);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred, please try again");
