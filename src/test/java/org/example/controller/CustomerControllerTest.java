@@ -20,8 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 
-import java.util.Objects;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -41,34 +39,22 @@ class CustomerControllerTest {
     private CustomerController customerController;
 
 
-
-    @BeforeEach
-    void setUp() {
-
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-/*
-    @Test
+ /*   @Test
     void registerCustomer() {
 
         CustomerDto customerDto = new CustomerDto("Tilly", "Bohl", "068112345678", 12345,"tilly@tilly.com","1234abc");
-
-        when(customerService.registerCustomer(any(CustomerDto.class))).thenAnswer(invocation ->
+        when(customerService.registerCustomer(customerDto)).thenAnswer(invocation ->
                 ResponseEntity.status(HttpStatus.CREATED).body("Customer registered successfully"));
-
         ResponseEntity<?> responseEntity = customerController.registerCustomer(customerDto);
 
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals("Customer registered successfully", Objects.requireNonNull(responseEntity.getBody()));
 
         verify(customerService, times(1)).registerCustomer(customerDto);
-    }*/
+    }
 
 
-
+//any(CustomerDto.class))*/
 
 
     @Test
@@ -76,11 +62,8 @@ class CustomerControllerTest {
         CustomerLoginDto loginDto = new CustomerLoginDto("validEmail", "validPassword");
         Customer loginCustomer = new Customer();
         String jwtToken = "mockJwtToken";
-
         when(customerService.authenticateCustomer(loginDto)).thenReturn(loginCustomer);
-
         when(jwtService.generateToken(loginCustomer)).thenReturn(jwtToken);
-
         ResponseEntity<?> responseEntity = customerController.loginCustomer(loginDto);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         LoginResponseDto responseBody = (LoginResponseDto) responseEntity.getBody();
@@ -89,7 +72,6 @@ class CustomerControllerTest {
         verify(customerService, times(1)).authenticateCustomer(loginDto);
         verify(jwtService, times(1)).generateToken(loginCustomer);
     }
-
     @Test
     void loginCustomerCredentialsInvalid() {
         CustomerLoginDto loginDto = new CustomerLoginDto("invalidEmail", "invalidPassword");
@@ -99,7 +81,6 @@ class CustomerControllerTest {
         assertEquals("Invalid credentials", responseEntity.getBody());
         verify(customerService, times(1)).authenticateCustomer(loginDto);
     }
-
     @Test
     void checkCustomerSessionSessionValid() {
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -110,7 +91,6 @@ class CustomerControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("Session is valid.", responseEntity.getBody());
     }
-
     @Test
     void checkCustomerSessionSessionInvalid() {
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -121,4 +101,14 @@ class CustomerControllerTest {
         assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
         assertEquals("Session is not valid.", responseEntity.getBody());
     }
+    @Test
+    void logoutCustomerHappyPath() {
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        ResponseEntity<?> responseEntity = customerController.logoutCustomer(response);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals("Customer logged out successfully", responseEntity.getBody());
+        verify(response, times(1)).addCookie(any(Cookie.class));
+    }
+
+
 }

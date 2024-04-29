@@ -36,6 +36,13 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
+    public CustomerDto getCustomerInfo(String email) {
+        Customer customer = customerRepository.findByEmail(email)
+                .orElseThrow(null);
+
+        return convertCustomerToDto(customer);
+    }
+
     public Customer authenticateCustomer(CustomerLoginDto customerLoginDto) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -45,6 +52,17 @@ public class CustomerService {
         );
 
         return customerRepository.findByEmail(customerLoginDto.getEmail()).orElse(null);
+    }
+
+    private CustomerDto convertCustomerToDto(Customer customer) {
+        CustomerDto customerDto = new CustomerDto();
+        customerDto.setEmail(customer.getEmail());
+        customerDto.setFirstName(customer.getFirstName());
+        customerDto.setLastName(customer.getLastName());
+        customerDto.setPhoneNumber(customer.getPhoneNumber());
+        customerDto.setLicenceNumber(customer.getLicenceNumber());
+
+        return customerDto;
     }
 
     private Customer convertCustomerDtoToEntity(CustomerDto customerDto) {
