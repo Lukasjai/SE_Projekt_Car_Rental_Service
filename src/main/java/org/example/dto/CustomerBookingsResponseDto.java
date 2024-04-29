@@ -35,6 +35,10 @@ public class CustomerBookingsResponseDto {
 
     public CustomerBookingsResponseDto() {}
 
+    public void setCarPrice(float carPrice) {
+        this.carPrice = carPrice;
+    }
+
     public CustomerBookingsResponseDto(
             String carBrand,
             long orderId,
@@ -74,6 +78,8 @@ public class CustomerBookingsResponseDto {
     public float getCarPrice() {
         return carPrice;
     }
+
+
 
     public LocalDate getReturnDate() {
         return returnDate;
