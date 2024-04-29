@@ -90,7 +90,7 @@ function bookCar(car) {
 }
 
 function fetchCars(pickupDate, returnDate) {
-    fetch('/api/v1/cars', {
+    fetch('/api/v1/cars/findAvailable', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
