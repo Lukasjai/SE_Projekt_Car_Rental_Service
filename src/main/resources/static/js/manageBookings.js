@@ -1,9 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     fetchBookings();
 });
+document.getElementById("currency-dropdown").addEventListener("change", function (){
+    fetchBookings()
+})
 
 function fetchBookings() {
-    fetch('/api/v1/bookings', {
+    let valueButton = document.getElementById('currency-dropdown').value;
+    fetch('/api/v1/bookings?' +new URLSearchParams({"currency": valueButton}), {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
