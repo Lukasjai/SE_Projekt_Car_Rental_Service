@@ -1,5 +1,6 @@
 package org.example.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -19,6 +20,7 @@ public class CustomerDto {
     private int licenceNumber;
     @NotNull
     @NotEmpty
+    @Email
     private String email;
     @NotNull
     @NotEmpty
