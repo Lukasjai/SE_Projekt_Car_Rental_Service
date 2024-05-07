@@ -1,28 +1,29 @@
 package org.example.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class CustomerDto {
 
-    @NotNull
     @NotEmpty
     private String firstName;
-    @NotNull
+
     @NotEmpty
     private String lastName;
-    @NotNull
+
     @NotEmpty
+    @Max(message = "Phone number can't exceed 15 digits", value = 15)
     private String phoneNumber;
+
     @NotNull
-    @NotEmpty
     private int licenceNumber;
-    @NotNull
+
     @NotEmpty
     @Email
     private String email;
-    @NotNull
+
     @NotEmpty
     private String password;
 
