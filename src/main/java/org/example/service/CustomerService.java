@@ -7,6 +7,8 @@ import org.example.repository.CustomerRepository;
 import org.example.dto.CustomerDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,26 @@ public class CustomerService {
         Customer customer = convertCustomerDtoToEntity(customerDto);
 
         return customerRepository.save(customer);
+    }
+
+    public void updateCustomerInfo(String email, CustomerDto customerDto) {
+        Customer customer = customerRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        if (customerDto.getPhoneNumber() != null && customerDto.getPhoneNumber().length() <= 15) {
+            customer.setPhoneNumber(customerDto.getPhoneNumber());
+            customerRepository.save(customer);
+        } else {
+            throw new IllegalArgumentException("Invalid phone number length");
+        }
+    }
+
+    @Transactional
+    public void deleteCustomerByEmail() {
+        String email = getCurrentUserEmail();
+        Customer customer = customerRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        customerRepository.delete(customer);
     }
 
     public CustomerDto getCustomerInfo(String email) {
@@ -75,5 +97,10 @@ public class CustomerService {
         customer.setPassword(this.passwordEncoder.encode(customerDto.getPassword()));
 
         return customer;
+    }
+
+    private String getCurrentUserEmail() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
     }
 }
