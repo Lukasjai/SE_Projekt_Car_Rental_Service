@@ -84,13 +84,54 @@ public class CustomerController {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("jwtToken".equals(cookie.getName()) && jwtService.validateToken(cookie.getValue())) {
-                   CustomerDto customer = customerService.getCustomerInfo(jwtService.extractUsername(cookie.getValue()));
-                   return ResponseEntity.status(HttpStatus.OK).body(customer);
+                    CustomerDto customer = customerService.getCustomerInfo(jwtService.extractUsername(cookie.getValue()));
+                    return ResponseEntity.status(HttpStatus.OK).body(customer);
                 }
             }
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
+    @PatchMapping("/update")
+    public ResponseEntity<?> updateCustomer(HttpServletRequest request, @RequestBody CustomerDto customerDto) {
+        try {
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("jwtToken".equals(cookie.getName()) && jwtService.validateToken(cookie.getValue())) {
+                        String username = jwtService.extractUsername(cookie.getValue());
+                        customerService.updateCustomerInfo(username, customerDto);
+                        return ResponseEntity.ok().body("Profile updated successfully.");
+                    }
+                }
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Session is not valid.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update customer profile.");
+        }
+    }
+
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteCustomer(HttpServletResponse response) {
+        try {
+            customerService.deleteCustomerByEmail();
+
+            // Clearing the jwtToken cookie similarly to the logout method
+            Cookie cookie = new Cookie("jwtToken", null);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true); // Set this depending on your deployment (true if using HTTPS)
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+
+            return ResponseEntity.ok().body("Customer profile deleted successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete customer profile.");
+        }
     }
 
     @GetMapping("/check-session")
