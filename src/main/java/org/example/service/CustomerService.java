@@ -1,5 +1,6 @@
 package org.example.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.dto.CustomerLoginDto;
 import org.example.exception.EmailAlreadyInUseException;
 import org.example.model.Customer;
@@ -28,26 +29,25 @@ public class CustomerService {
     }
 
     @Transactional
-    public Customer registerCustomer(CustomerDto customerDto) {
+    public void registerCustomer(CustomerDto customerDto) {
         if (customerRepository.findByEmail(customerDto.getEmail()).isPresent()) {
             throw new EmailAlreadyInUseException("Email already in use");
         }
 
         Customer customer = convertCustomerDtoToEntity(customerDto);
 
-        return customerRepository.save(customer);
+        customerRepository.save(customer);
     }
 
-    public void updateCustomerInfo(String email, CustomerDto customerDto) {
-        Customer customer = customerRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    @Transactional
+    public void updateCustomerPhoneNumber(CustomerDto customerDto) {
+        String email = getCurrentUserEmail();
 
-        if (customerDto.getPhoneNumber() != null && customerDto.getPhoneNumber().length() <= 15) {
-            customer.setPhoneNumber(customerDto.getPhoneNumber());
-            customerRepository.save(customer);
-        } else {
-            throw new IllegalArgumentException("Invalid phone number length");
-        }
+        Customer customer = customerRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+
+        customer.setPhoneNumber(customerDto.getPhoneNumber());
+        customerRepository.save(customer);
     }
 
     @Transactional
@@ -60,7 +60,7 @@ public class CustomerService {
 
     public CustomerDto getCustomerInfo(String email) {
         Customer customer = customerRepository.findByEmail(email)
-                .orElseThrow(null);
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         return convertCustomerToDto(customer);
     }
