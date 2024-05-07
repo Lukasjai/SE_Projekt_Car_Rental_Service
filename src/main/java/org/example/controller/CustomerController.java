@@ -94,19 +94,10 @@ public class CustomerController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<?> updateCustomer(HttpServletRequest request, @RequestBody CustomerDto customerDto) {
+    public ResponseEntity<String> updateCustomer(@RequestBody CustomerDto customerDto) {
         try {
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if ("jwtToken".equals(cookie.getName()) && jwtService.validateToken(cookie.getValue())) {
-                        String username = jwtService.extractUsername(cookie.getValue());
-                        customerService.updateCustomerInfo(username, customerDto);
-                        return ResponseEntity.ok().body("Profile updated successfully.");
-                    }
-                }
-            }
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Session is not valid.");
+            customerService.updateCustomerPhoneNumber(customerDto);
+            return ResponseEntity.status(HttpStatus.OK).body("Profile updated successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update customer profile.");
         }
