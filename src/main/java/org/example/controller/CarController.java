@@ -34,9 +34,8 @@ public class CarController {
         CurrencyConverter currencyConverter = new CurrencyConverter();
         for (Car car : availableCars) {
             System.out.println("update PRice");
-            double convertedPrice = currencyConverter.convertCurrency(car.getPrices(), "USD", currency);
-            car.setPrices((float) convertedPrice);
-
+            double convertedPrice = currencyConverter.convertCurrency(car.getPrice(), "USD", currency);
+            car.setPrice((float) convertedPrice);
         }
         return ResponseEntity.status(HttpStatus.OK).body(availableCars);
     }
