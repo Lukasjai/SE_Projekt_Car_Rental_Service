@@ -31,11 +31,11 @@ public class BookingService {
     }
 
     @Transactional
-    public Order bookCar(BookingRequestDto bookingRequestDto) {
+    public void bookCar(BookingRequestDto bookingRequestDto) {
         String email = getCurrentUserEmail();
         Order order = bookingRequestDtoToOrder(bookingRequestDto, email);
 
-        return orderRepository.save(order);
+        orderRepository.save(order);
     }
 
     @Transactional(readOnly = true)
