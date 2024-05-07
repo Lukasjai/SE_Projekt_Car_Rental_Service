@@ -33,13 +33,15 @@ function updateBookingTable(bookings) {
         '<th>Brand</th>' +
         '<th>Model</th>' +
         '<th>Seat Number</th>' +
-        '<th>Price</th>' +
+        '<th>Price/Day</th>' +
         '<th>Order Date</th>' +
         '<th>Pickup Date</th>' +
         '<th>Return Date</th>' +
         '<th>Order ID</th>' +
         '<th></th>' +
         '</tr>';
+
+    const currencySymbol = getCurrencySymbol(document.getElementById('currency-dropdown').value);
 
     bookings.forEach(booking => {
         const row = table.insertRow(-1);
@@ -55,7 +57,7 @@ function updateBookingTable(bookings) {
         brandCell.textContent = booking.carBrand;
         modelCell.textContent = booking.carModel;
         seatsCell.textContent = booking.carSeats;
-        priceCell.textContent = `$${booking.carPrice.toFixed(2)}`;
+        priceCell.textContent = `${booking.carPrice.toFixed(2)}${currencySymbol}`;
         orderDateCell.textContent = formatDate(booking.orderDate);
         pickupDateCell.textContent = formatDate(booking.pickupDate);
         returnDateCell.textContent = formatDate(booking.returnDate);
@@ -75,6 +77,15 @@ function updateBookingTable(bookings) {
 
         deleteButtonCell.appendChild(deleteButton);
     });
+}
+
+function getCurrencySymbol(currency) {
+    switch (currency) {
+        case 'USD': return '$';
+        case 'EUR': return '€';
+        case 'GBP': return '£';
+        default: return '$';
+    }
 }
 
 function deleteBooking(orderId, carBrand, carModel) {
