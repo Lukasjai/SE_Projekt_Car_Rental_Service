@@ -1,5 +1,5 @@
 # SE Car Rental Service
-FH Campus Wien - SDE - Service Engineering - Final Project Part 2
+FH Campus Wien - SDE - Service Engineering - Final Project Part 1
 
 The SE Car Rental Service is a Spring Boot application designed to handle user registration and authentication processes,
 booking requests and car requests accessible via a web frontend.
