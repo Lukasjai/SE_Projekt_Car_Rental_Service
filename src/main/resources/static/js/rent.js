@@ -24,6 +24,7 @@ function submitRentForm() {
 function displayCars(cars) {
     const container = document.getElementById('carsContainer');
     container.innerHTML = '';
+    const currencySymbol = getCurrencySymbol(document.getElementById('currency-dropdown').value);
     cars.forEach(car => {
         const carTable = document.createElement('table');
         carTable.id = 'carTable';
@@ -38,7 +39,7 @@ function displayCars(cars) {
         brandCell.innerHTML = `Brand: ${car.car_brand_name}`;
         modelCell.innerHTML = `Model: ${car.car_model_name}`;
         seatsCell.innerHTML = `Seats: ${car.number_of_seats}`;
-        priceCell.innerHTML = `Price: ${car.prices} $`;
+        priceCell.innerHTML = `Price/Day: ${car.prices}${currencySymbol}`;
 
         const bookButtonCell = carRow.insertCell();
         const bookButton = document.createElement('button');
@@ -54,6 +55,15 @@ function displayCars(cars) {
         bookButtonCell.appendChild(bookButton);
         container.appendChild(carTable);
     });
+}
+
+function getCurrencySymbol(currency) {
+    switch (currency) {
+        case 'USD': return '$';
+        case 'EUR': return '€';
+        case 'GBP': return '£';
+        default: return '$';
+    }
 }
 
 function bookCar(car) {
