@@ -12,10 +12,12 @@ function checkLoginState() {
                 updateLoginLinkToLogout();
                 document.getElementById('manageBookings').style.display = 'block';
                 document.getElementById('twonavbar-box').style.display = 'block';
+                document.getElementById('profileSettings').style.display = 'block';
             } else {
                 updateLoginLinkToLogin();
                 document.getElementById('manageBookings').style.display = 'none';
                 document.getElementById('twonavbar-box').style.display = 'none';
+                document.getElementById('profileSettings').style.display = 'none';
             }
         })
         .catch(error => {
