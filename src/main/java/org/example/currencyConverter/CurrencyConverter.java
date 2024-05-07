@@ -1,8 +1,8 @@
 package org.example.currencyConverter;
 
 
-import org.example.currenyConverterConnection.ICurrencyConverterContract;
-import org.example.currenyConverterConnection.ICurrencyConverterContract_Service;
+import org.example.currencyConverterConnection.ICurrencyConverterContract;
+import org.example.currencyConverterConnection.ICurrencyConverterContract_Service;
 
 public class CurrencyConverter {
 
