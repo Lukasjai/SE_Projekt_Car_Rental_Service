@@ -49,7 +49,7 @@ function displayCarsWithNewPrice(cars) {
         brandCell.innerHTML = `Brand: ${car.car_brand_name}`;
         modelCell.innerHTML = `Model: ${car.car_model_name}`;
         seatsCell.innerHTML = `Seats: ${car.number_of_seats}`;
-        priceCell.innerHTML = `Price: ${car.prices}${currencySymbol}`;
+        priceCell.innerHTML = `Price/Day: ${car.prices}${currencySymbol}`;
 
         const bookButtonCell = carRow.insertCell();
         const bookButton = document.createElement('button');
