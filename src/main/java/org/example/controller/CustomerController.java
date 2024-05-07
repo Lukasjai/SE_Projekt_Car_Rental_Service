@@ -10,6 +10,7 @@ import org.example.model.Customer;
 import org.example.dto.CustomerDto;
 import org.example.service.CustomerService;
 import org.example.service.JwtService;
+import org.example.util.CookieUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,12 +31,13 @@ public class CustomerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerCustomer(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<String> registerCustomer(@RequestBody CustomerDto customerDto) {
         try {
             customerService.registerCustomer(customerDto);
             return ResponseEntity.status(HttpStatus.CREATED).body("Customer registered successfully");
         } catch (EmailAlreadyInUseException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("The information provided cannot be used to create a new account. Please double-check your details or try different ones.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("The information provided cannot be used to create a new account." +
+                    "Please double-check your details or try different ones.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Customer registration failed");
         }
@@ -51,12 +53,7 @@ public class CustomerController {
             loginResponseDto.setJwtToken(jwtToken);
             loginResponseDto.setJwtExpirationInMilliseconds(jwtService.getExpirationTime());
 
-            Cookie cookie = new Cookie("jwtToken", jwtToken);
-            cookie.setHttpOnly(true);
-            cookie.setSecure(true);
-            cookie.setPath("/");
-            cookie.setMaxAge((int) jwtService.getExpirationTime());
-            httpServletResponse.addCookie(cookie);
+            CookieUtils.setJwtCookie(httpServletResponse, jwtToken, (int)jwtService.getExpirationTime());
 
             return ResponseEntity.status(HttpStatus.OK).body(loginResponseDto);
         } catch (BadCredentialsException e) {
@@ -67,13 +64,8 @@ public class CustomerController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutCustomer(HttpServletResponse response) {
-        Cookie cookie = new Cookie("jwtToken", null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+    public ResponseEntity<String> logoutCustomer(HttpServletResponse response) {
+        CookieUtils.clearJwtCookie(response);
 
         return ResponseEntity.ok().body("Customer logged out successfully");
     }
@@ -81,13 +73,11 @@ public class CustomerController {
     @GetMapping("/profile")
     public ResponseEntity<CustomerDto> getProfile(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("jwtToken".equals(cookie.getName()) && jwtService.validateToken(cookie.getValue())) {
-                    CustomerDto customer = customerService.getCustomerInfo(jwtService.extractUsername(cookie.getValue()));
-                    return ResponseEntity.status(HttpStatus.OK).body(customer);
-                }
-            }
+        Cookie jwtCookie = CookieUtils.findJwtCookie(cookies);
+
+        if (jwtCookie != null && jwtService.validateToken(jwtCookie.getValue())) {
+            CustomerDto customer = customerService.getCustomerInfo(jwtService.extractUsername(jwtCookie.getValue()));
+            return ResponseEntity.status(HttpStatus.OK).body(customer);
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -103,23 +93,13 @@ public class CustomerController {
         }
     }
 
-
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteCustomer(HttpServletResponse response) {
+    public ResponseEntity<String> deleteCustomer(HttpServletResponse response) {
         try {
             customerService.deleteCustomerByEmail();
-
-            // Clearing the jwtToken cookie similarly to the logout method
-            Cookie cookie = new Cookie("jwtToken", null);
-            cookie.setHttpOnly(true);
-            cookie.setSecure(true); // Set this depending on your deployment (true if using HTTPS)
-            cookie.setPath("/");
-            cookie.setMaxAge(0);
-            response.addCookie(cookie);
+            CookieUtils.clearJwtCookie(response);
 
             return ResponseEntity.ok().body("Customer profile deleted successfully.");
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete customer profile.");
         }
@@ -128,13 +108,12 @@ public class CustomerController {
     @GetMapping("/check-session")
     public ResponseEntity<?> checkCustomerSession(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("jwtToken".equals(cookie.getName()) && jwtService.validateToken(cookie.getValue())) {
-                    return ResponseEntity.ok().body("Session is valid.");
-                }
-            }
+        Cookie jwtCookie = CookieUtils.findJwtCookie(cookies);
+
+        if (jwtCookie != null && jwtService.validateToken(jwtCookie.getValue())) {
+            return ResponseEntity.ok().body("Session is valid.");
         }
+
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Session is not valid.");
     }
 }
