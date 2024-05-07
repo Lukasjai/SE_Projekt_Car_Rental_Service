@@ -79,8 +79,6 @@ public class CustomerBookingsResponseDto {
         return carPrice;
     }
 
-
-
     public LocalDate getReturnDate() {
         return returnDate;
     }
