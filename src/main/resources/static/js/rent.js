@@ -36,17 +36,17 @@ function displayCars(cars) {
         const seatsCell = carRow.insertCell();
         const priceCell = carRow.insertCell();
 
-        brandCell.innerHTML = `Brand: ${car.car_brand_name}`;
-        modelCell.innerHTML = `Model: ${car.car_model_name}`;
-        seatsCell.innerHTML = `Seats: ${car.number_of_seats}`;
-        priceCell.innerHTML = `Price/Day: ${car.prices}${currencySymbol}`;
+        brandCell.innerHTML = `Brand: ${car.brandName}`;
+        modelCell.innerHTML = `Model: ${car.modelName}`;
+        seatsCell.innerHTML = `Seats: ${car.numberOfSeats}`;
+        priceCell.innerHTML = `Price/Day: ${car.price}${currencySymbol}`;
 
         const bookButtonCell = carRow.insertCell();
         const bookButton = document.createElement('button');
         bookButton.id = 'bookButton';
         bookButton.textContent = 'Book';
         bookButton.addEventListener('click', () => {
-            const confirmBooking = window.confirm(`Do you want to book ${car.car_brand_name} ${car.car_model_name}?`);
+            const confirmBooking = window.confirm(`Do you want to book ${car.brandName} ${car.modelName}?`);
             if (confirmBooking) {
                 bookCar(car)
             }
@@ -81,15 +81,15 @@ function bookCar(car) {
             pickupDate: pickupDate,
             returnDate: returnDate,
             orderDate: today,
-            price: car.prices
+            price: car.price
         })
     })
         .then(response => {
             if (response.status === 201) {
-                alert(`You have booked ${car.car_brand_name} ${car.car_model_name}`);
+                alert(`You have booked ${car.brandName} ${car.modelName}`);
                 fetchCars(pickupDate, returnDate);
             } else {
-                alert(`Booking failed for ${car.car_brand_name} ${car.car_model_name}`);
+                alert(`Booking failed for ${car.brandName} ${car.modelName}`);
             }
         })
 
@@ -117,7 +117,6 @@ function fetchCars(pickupDate, returnDate) {
             throw new Error('Request failed!');
         })
         .then(data => {
-            console.log(data);
             displayCars(data);
         })
         .catch(error => {
