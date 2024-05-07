@@ -65,11 +65,11 @@ public class BookingService {
         Car car = order.getCar();
 
         return new CustomerBookingsResponseDto(
-                car.getCar_brand_name(),
+                car.getBrandName(),
                 order.getOrderId(),
-                car.getCar_model_name(),
-                car.getNumber_of_seats(),
-                car.getPrices(),
+                car.getModelName(),
+                car.getNumberOfSeats(),
+                car.getPrice(),
                 order.getPickUpDate(),
                 order.getBringBackDate(),
                 order.getOrderDate()
