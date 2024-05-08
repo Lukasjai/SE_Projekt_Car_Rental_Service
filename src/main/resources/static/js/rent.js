@@ -8,17 +8,32 @@ function submitRentForm() {
     const today = new Date().toISOString().split('T')[0];
 
     if (!pickupDate || !returnDate) {
-        alert('Please select both pickup and return dates.');
+        Swal.fire({
+            icon: 'error',
+            title: 'Missing Dates',
+            text: 'Please select both pickup and return dates.',
+            confirmButtonText: 'OK'
+        });
         return;
     }
 
     if (new Date(pickupDate) > new Date(returnDate)) {
-        alert('Return date must be after the pickup date.');
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Dates',
+            text: 'Return date must be after the pickup date.',
+            confirmButtonText: 'OK'
+        });
         return;
     }
 
     if (new Date(pickupDate) < new Date(today)) {
-        alert('Pickup date cannot be a past date');
+        Swal.fire({
+            icon: 'error',
+            title: 'Past Date',
+            text: 'Pickup date cannot be a past date.',
+            confirmButtonText: 'OK'
+        });
         return;
     }
 
@@ -50,10 +65,20 @@ function displayCars(cars) {
         bookButton.id = 'bookButton';
         bookButton.textContent = 'Book';
         bookButton.addEventListener('click', () => {
-            const confirmBooking = window.confirm(`Do you want to book ${car.brandName} ${car.modelName}?`);
-            if (confirmBooking) {
-                bookCar(car)
-            }
+            Swal.fire({
+                title: 'Confirm Booking',
+                text: `Do you want to book ${car.brandName} ${car.modelName}?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, book it!',
+                cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    bookCar(car);
+                }
+            });
         });
 
         bookButtonCell.appendChild(bookButton);
@@ -90,16 +115,32 @@ function bookCar(car) {
     })
         .then(response => {
             if (response.status === 201) {
-                alert(`You have booked ${car.brandName} ${car.modelName}`);
-                fetchCars(pickupDate, returnDate);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Booking Successful',
+                    text: `You have booked ${car.brandName} ${car.modelName}.`,
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    fetchCars(pickupDate, returnDate); // Refresh the list after a successful booking
+                });
             } else {
-                alert(`Booking failed for ${car.brandName} ${car.modelName}`);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Booking Failed',
+                    text: `Booking failed for ${car.brandName} ${car.modelName}.`,
+                    confirmButtonText: 'OK'
+                });
             }
         })
 
         .catch(error => {
             console.log(error)
-            alert("An error occurred. Please try again later.");
+            Swal.fire({
+                icon: 'error',
+                title: 'An Error Occurred',
+                text: 'An error occurred during the booking process. Please try again later.',
+                confirmButtonText: 'OK'
+            });
         })
 }
 

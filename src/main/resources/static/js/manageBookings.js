@@ -68,13 +68,21 @@ function updateBookingTable(bookings) {
         deleteButton.id = 'deleteButton';
         deleteButton.textContent = '✖';
         deleteButton.onclick = function() {
-            const confirmDeleteBooking = window.confirm(`Do you want to delete the Booking for ${booking.carBrand} ${booking.carModel}?`);
-            if(confirmDeleteBooking){
-                deleteBooking(booking.orderId, booking.carBrand, booking.carModel);
-            }
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `Do you want to delete the Booking for ${booking.carBrand} ${booking.carModel}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteBooking(booking.orderId, booking.carBrand, booking.carModel);
+                }
+            });
         };
-
-
         deleteButtonCell.appendChild(deleteButton);
     });
 }
@@ -97,14 +105,29 @@ function deleteBooking(orderId, carBrand, carModel) {
     })
         .then(response => {
             if (response.status === 200) {
-                alert(`Booking deleted successfully for ${carBrand} ${carModel}`);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: `Booking deleted successfully for ${carBrand} ${carModel}.`,
+                    confirmButtonText: 'OK'
+                });
                 fetchBookings(); // Refresh the list after deletion
             } else {
-                alert(`Deleting failed for ${carBrand} ${carModel}`);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Delete Failed',
+                    text: `Deleting failed for ${carBrand} ${carModel}.`,
+                    confirmButtonText: 'OK'
+                });
             }
         })
         .catch(error => {
-            alert(`There was a problem with the delete operation: ${error}`);
+            Swal.fire({
+                icon: 'error',
+                title: 'Delete Error',
+                text: `There was a problem with the delete operation: ${error}`,
+                confirmButtonText: 'OK'
+            });
         });
 }
 
