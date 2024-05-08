@@ -1,20 +1,20 @@
-document.getElementById("currency-dropdown").addEventListener("change", function (){
+document.getElementById("currency-dropdown").addEventListener("change", function () {
     changeCurrencyRent()
 })
-function changeCurrencyRent()  {
+
+function changeCurrencyRent() {
     let pickupDate = document.getElementById('pickupDate').value;
     let returnDate = document.getElementById('returnDate').value;
     let valueButton = document.getElementById('currency-dropdown').value;
-    fetch('/api/v1/cars/updatePrice?'+new URLSearchParams({"currency": valueButton}), {
-        method: 'POST',
+    fetch('/api/v1/cars?' + new URLSearchParams({
+        "toCurrency": valueButton,
+        "pickupDate": pickupDate,
+        "returnDate": returnDate
+    }), {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            pickupDate: pickupDate,
-            returnDate: returnDate
-        }),
-
     })
         .then(response => {
             if (response.ok) {
@@ -23,7 +23,6 @@ function changeCurrencyRent()  {
             throw new Error('Request failed!');
         })
         .then(data => {
-            console.log(data);
             displayCarsWithNewPrice(data);
         })
         .catch(error => {
@@ -69,9 +68,13 @@ function displayCarsWithNewPrice(cars) {
 
 function getCurrencySymbol(currency) {
     switch (currency) {
-        case 'USD': return '$';
-        case 'EUR': return '€';
-        case 'GBP': return '£';
-        default: return '$';
+        case 'USD':
+            return '$';
+        case 'EUR':
+            return '€';
+        case 'GBP':
+            return '£';
+        default:
+            return '$';
     }
 }

@@ -1,3 +1,7 @@
+document.getElementById('currency-dropdown').addEventListener('change', function () {
+    submitRentForm();
+});
+
 function submitRentForm() {
     let pickupDate = document.getElementById('pickupDate').value;
     let returnDate = document.getElementById('returnDate').value;
@@ -100,15 +104,15 @@ function bookCar(car) {
 }
 
 function fetchCars(pickupDate, returnDate) {
-    fetch('/api/v1/cars/findAvailable', {
-        method: 'POST',
+    fetch('/api/v1/cars?' + new URLSearchParams(
+        {
+            "pickupDate": pickupDate,
+            "returnDate": returnDate
+        }), {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            pickupDate: pickupDate,
-            returnDate: returnDate
-        })
     })
         .then(response => {
             if (response.ok) {
