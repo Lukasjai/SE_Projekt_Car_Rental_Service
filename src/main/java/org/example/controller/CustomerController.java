@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.CustomerLoginDto;
 import org.example.dto.LoginResponseDto;
-import org.example.exception.EmailAlreadyInUseException;
 import org.example.model.Customer;
 import org.example.dto.CustomerDto;
 import org.example.service.CustomerService;
@@ -13,7 +12,6 @@ import org.example.service.JwtService;
 import org.example.util.CookieUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,35 +30,22 @@ public class CustomerController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerCustomer(@RequestBody CustomerDto customerDto) {
-        try {
-            customerService.registerCustomer(customerDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Customer registered successfully");
-        } catch (EmailAlreadyInUseException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("The information provided cannot be used to create a new account." +
-                    "Please double-check your details or try different ones.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Customer registration failed");
-        }
+        customerService.registerCustomer(customerDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Customer registered successfully");
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginCustomer(@RequestBody CustomerLoginDto loginCustomerDto) {
-        try {
-            Customer loginCustomer = customerService.authenticateCustomer(loginCustomerDto);
-            String jwtToken = jwtService.generateToken(loginCustomer);
+        Customer loginCustomer = customerService.authenticateCustomer(loginCustomerDto);
+        String jwtToken = jwtService.generateToken(loginCustomer);
 
-            LoginResponseDto loginResponseDto = new LoginResponseDto();
-            loginResponseDto.setJwtToken(jwtToken);
-            loginResponseDto.setJwtExpirationInMilliseconds(jwtService.getExpirationTime());
+        LoginResponseDto loginResponseDto = new LoginResponseDto();
+        loginResponseDto.setJwtToken(jwtToken);
+        loginResponseDto.setJwtExpirationInMilliseconds(jwtService.getExpirationTime());
 
-            CookieUtils.setJwtCookie(httpServletResponse, jwtToken, (int)jwtService.getExpirationTime());
+        CookieUtils.setJwtCookie(httpServletResponse, jwtToken, (int)jwtService.getExpirationTime());
 
-            return ResponseEntity.status(HttpStatus.OK).body(loginResponseDto);
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Invalid credentials");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Customer login failed");
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(loginResponseDto);
     }
 
     @PostMapping("/logout")
@@ -85,24 +70,17 @@ public class CustomerController {
 
     @PatchMapping("/update")
     public ResponseEntity<String> updateCustomer(@RequestBody CustomerDto customerDto) {
-        try {
-            customerService.updateCustomerPhoneNumber(customerDto);
-            return ResponseEntity.status(HttpStatus.OK).body("Profile updated successfully.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update customer profile.");
-        }
+        customerService.updateCustomerPhoneNumber(customerDto);
+        return ResponseEntity.status(HttpStatus.OK).body("Profile updated successfully.");
+
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteCustomer(HttpServletResponse response) {
-        try {
-            customerService.deleteCustomerByEmail();
-            CookieUtils.clearJwtCookie(response);
+        customerService.deleteCustomerByEmail();
+        CookieUtils.clearJwtCookie(response);
 
-            return ResponseEntity.ok().body("Customer profile deleted successfully.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete customer profile.");
-        }
+        return ResponseEntity.ok().body("Customer profile deleted successfully.");
     }
 
     @GetMapping("/check-session")
