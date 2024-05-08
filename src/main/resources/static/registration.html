@@ -37,15 +37,15 @@
 <div id="LoMa">
     <ul>
         <li>
-            <img class="LoMa-icon" src="img/home.png" alt=""> <a class="current" class="home-links" href="index.html">Home</a>
+            <img class="LoMa-icon" src="img/home.png" alt=""> <a class="home-links" href="index.html">Home</a>
         </li>
         <li>
-            <img class="LoMa-icon" src="img/user.png" alt=""> <a class="home-links" href="login.html"></a>
+            <img class="LoMa-icon" src="img/user.png" alt=""> <a class="current" class="home-links" href="login.html">Login | Register</a>
         </li>
-        <li id="profileSettings">
+        <li id="profileSettings" style="display: none;">
             <img class="LoMa-icon" src="img/account-settings.png" alt=""> <a class="home-links" href="profile.html">Profile</a>
         </li>
-        <li id="manageBookings">
+        <li id="manageBookings" style="display: none;">
             <img class="LoMa-icon" src="img/car.png" alt=""> <a class="home-links" href="manageBookings.html">Manage bookings</a>
         </li>
     </ul>
@@ -62,7 +62,7 @@
     <input type="text" id="lastName" name="lastName" placeholder="Mustermann" required>
 
     <label for="phoneNumber">Mobile Number:</label>
-    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="069945691238" required required style="width: 100%; height: 40px; margin-top: 10px; margin-bottom: 10px;">
+    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="069945691238" required pattern="[0-9]{1,15}" title="Digits only">
 
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" placeholder="max@mustermann.at" required>
