@@ -46,7 +46,7 @@ public class CustomerService {
         Customer customer = customerRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
 
-        customer.setPhoneNumber(customerDto.getPhoneNumber());
+        customer.setPhoneNumber(String.valueOf(customerDto.getPhoneNumber()));
         customerRepository.save(customer);
     }
 
@@ -81,7 +81,7 @@ public class CustomerService {
         customerDto.setEmail(customer.getEmail());
         customerDto.setFirstName(customer.getFirstName());
         customerDto.setLastName(customer.getLastName());
-        customerDto.setPhoneNumber(customer.getPhoneNumber());
+        customerDto.setPhoneNumber(Long.parseLong(String.valueOf(customer.getPhoneNumber())));
         customerDto.setLicenceNumber(customer.getLicenceNumber());
 
         return customerDto;
@@ -91,7 +91,7 @@ public class CustomerService {
         Customer customer = new Customer();
         customer.setFirstName(customerDto.getFirstName());
         customer.setLastName(customerDto.getLastName());
-        customer.setPhoneNumber(customerDto.getPhoneNumber());
+        customer.setPhoneNumber(String.valueOf(customerDto.getPhoneNumber()));
         customer.setLicenceNumber(customerDto.getLicenceNumber());
         customer.setEmail(customerDto.getEmail());
         customer.setPassword(this.passwordEncoder.encode(customerDto.getPassword()));

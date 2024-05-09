@@ -13,9 +13,9 @@ public class CustomerDto {
     @NotEmpty
     private String lastName;
 
-    @NotEmpty
+    @NotNull
     @Max(message = "Phone number can't exceed 15 digits", value = 15)
-    private String phoneNumber;
+    private long phoneNumber;
 
     @NotNull
     private int licenceNumber;
@@ -30,7 +30,7 @@ public class CustomerDto {
     public CustomerDto() {
     }
 
-    public CustomerDto(String firstName, String lastName, String phoneNumber, int licenceNumber, String email, String password) {
+    public CustomerDto(String firstName, String lastName, long phoneNumber, int licenceNumber, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
@@ -55,11 +55,11 @@ public class CustomerDto {
         this.lastName = lastName;
     }
 
-    public String getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
